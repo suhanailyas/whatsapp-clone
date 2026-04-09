@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Clone | Real WhatsApp 2025</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #111b21;
+            height: 100vh;
+        }
+
+        .whatsapp-container {
+            display: flex;
+            height: 100vh;
+            background: #111b21;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 380px;
+            background: #111b21;
+            border-right: 1px solid #2a2f32;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .sidebar-header {
+            padding: 15px 15px 8px 15px;
+            background: #1e2a2e;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            object-fit: cover;
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-size: 15px;
+            font-weight: 500;
+            color: #e9edef;
+        }
+
+        .user-time {
+            font-size: 11px;
+            color: #6a7175;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 20px;
+            color: #aebac1;
+        }
+
+        .header-icons i {
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        /* Search Bar */
+        .search-container {
+            padding: 10px 12px;
+            background: #111b21;
+            border-bottom: 1px solid #2a2f32;
+        }
+
+        .search-bar {
+            background: #1e2a2e;
+            border-radius: 8px;
+            padding: 6px 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-bar i {
+            color: #6a7175;
+            font-size: 14px;
+        }
+
+        .search-bar input {
+            flex: 1;
+            background: none;
+            border: none;
+            color: #e9edef;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .search-bar input::placeholder {
+            color: #6a7175;
+        }
+
+        .meta-ai-badge {
+            background: #005c4b;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 9px;
+            color: #00a884;
+            font-weight: 500;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            padding: 6px 12px;
+            gap: 20px;
+            border-bottom: 1px solid #2a2f32;
+            background: #111b21;
+        }
+
+        .tab {
+            color: #6a7175;
+            font-size: 13px;
+            font-weight: 500;
+            padding-bottom: 6px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .tab.active {
+            color: #00a884;
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #00a884;
+        }
+
+        /* New Chat Button - Smaller */
+        .new-chat-btn {
+            padding: 8px 12px;
+            margin: 6px 12px;
+            background: #00a884;
+            color: white;
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-weight: 500;
+            font-size: 13px;
+        }
+
+        .new-chat-btn:hover {
+            background: #008f6c;
+        }
+
+        /* Chats List */
+        .chats-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .chat-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-bottom: 1px solid #2a2f32;
+            position: relative;
+        }
+
+        .chat-item:hover {
+            background: #2a2f32;
+        }
+
+        .chat-item.pinned {
+            background: rgba(0, 168, 132, 0.1);
+        }
+
+        .chat-item.pinned::before {
+            content: '📌';
+            position: absolute;
+            left: 3px;
+            font-size: 10px;
+            color: #00a884;
+        }
+
+        .chat-item-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            margin-right: 12px;
+            object-fit: cover;
+        }
+
+        .chat-item-info {
+            flex: 1;
+        }
+
+        .chat-item-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
+
+        .chat-item-name {
+            font-weight: 500;
+            font-size: 14px;
+            color: #e9edef;
+        }
+
+        .chat-item-time {
+            font-size: 10px;
+            color: #6a7175;
+        }
+
+        .chat-item-preview {
+            font-size: 12px;
+            color: #6a7175;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .unread-badge {
+            background: #00a884;
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-left: 8px;
+        }
+
+        /* Chat Area */
+        .chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #0b141a;
+            background-image: url('https://web.whatsapp.com/img/bg-chat-tile-dark_a4be512e7195b6b733d9110b408f075d.png');
+        }
+
+        .empty-state {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .empty-state i {
+            font-size: 64px;
+            color: #00a884;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h3 {
+            color: #e9edef;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            color: #6a7175;
+        }
+
+        /* Chat Header */
+        .chat-header {
+            padding: 10px 15px;
+            background: #1e2a2e;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #2a2f32;
+        }
+
+        .chat-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .chat-header-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .chat-header-info h3 {
+            font-size: 15px;
+            color: #e9edef;
+            margin-bottom: 2px;
+        }
+
+        .chat-header-status {
+            font-size: 11px;
+            color: #6a7175;
+        }
+
+        .chat-header-status.online {
+            color: #00a884;
+        }
+
+        .chat-header-actions {
+            display: flex;
+            gap: 18px;
+            color: #aebac1;
+        }
+
+        .chat-header-actions i {
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        /* Messages */
+        .messages-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .message-wrapper {
+            display: flex;
+            width: 100%;
+        }
+
+        .message-wrapper.sent {
+            justify-content: flex-end;
+        }
+
+        .message-wrapper.received {
+            justify-content: flex-start;
+        }
+
+        .message-bubble {
+            max-width: 65%;
+            padding: 8px 12px;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .message-bubble.sent {
+            background: #005c4b;
+            border-bottom-right-radius: 0;
+            color: #e9edef;
+        }
+
+        .message-bubble.received {
+            background: #1e2a2e;
+            border-bottom-left-radius: 0;
+            color: #e9edef;
+        }
+
+        .message-text {
+            font-size: 13px;
+        }
+
+        .message-time {
+            font-size: 9px;
+            color: #6a7175;
+            margin-left: 8px;
+            float: right;
+            margin-top: 4px;
+        }
+
+        /* Voice Message */
+        .voice-message {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .voice-message audio {
+            height: 35px;
+            border-radius: 20px;
+        }
+
+        /* Input */
+        .message-input-container {
+            padding: 10px 15px;
+            background: #1e2a2e;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-top: 1px solid #2a2f32;
+        }
+
+        .input-actions {
+            display: flex;
+            gap: 12px;
+            color: #aebac1;
+        }
+
+        .input-actions i {
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .input-actions i.recording {
+            color: #ff4444;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        #message-input {
+            flex: 1;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 25px;
+            font-size: 13px;
+            outline: none;
+            background: #2a2f32;
+            color: #e9edef;
+        }
+
+        .send-btn {
+            background: #00a884;
+            color: white;
+            border: none;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #1e2a2e;
+            border-radius: 12px;
+            width: 320px;
+            color: #e9edef;
+        }
+
+        .modal-header {
+            padding: 12px 15px;
+            border-bottom: 1px solid #2a2f32;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .menu-item {
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            border-bottom: 1px solid #2a2f32;
+        }
+
+        .menu-item:hover {
+            background: #2a2f32;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1e2a2e;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #3b4a52;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="whatsapp-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="profile-section">
+                    <img id="user-avatar" class="avatar" src="https://ui-avatars.com/api/?name=Suhana&background=00a884&color=fff">
+                    <div class="user-details">
+                        <span class="user-name" id="user-name">suhanallyas❤️</span>
+                        <span class="user-time">7:47 AM</span>
+                    </div>
+                </div>
+                <div class="header-icons">
+                    <i class="fas fa-ellipsis-v" id="sidebar-menu-btn"></i>
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-container">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="search-input" placeholder="Ask Meta AI or Search">
+                    <span class="meta-ai-badge">✨ Meta AI</span>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs">
+                <div class="tab active" data-tab="all">All</div>
+                <div class="tab" data-tab="unread">Unread</div>
+                <div class="tab" data-tab="favorites">Favorites</div>
+                <div class="tab" data-tab="groups">Groups</div>
+            </div>
+
+            <!-- New Chat Button - Smaller -->
+            <div class="new-chat-btn" id="new-chat-btn">
+                <i class="fas fa-plus-circle"></i> New Chat
+            </div>
+
+            <!-- Chats List -->
+            <div class="chats-list" id="chats-list"></div>
+        </div>
+
+        <!-- Chat Area -->
+        <div class="chat-area">
+            <div id="empty-state" class="empty-state">
+                <i class="fab fa-whatsapp"></i>
+                <h3>WhatsApp Web</h3>
+                <p>Select a chat to start messaging</p>
+            </div>
+            <div id="active-chat" style="display: none; flex-direction: column; height: 100%;">
+                <div class="chat-header" id="chat-header"></div>
+                <div class="messages-container" id="messages-container"></div>
+                <div class="message-input-container">
+                    <div class="input-actions">
+                        <i class="far fa-smile" id="emoji-btn"></i>
+                        <i class="fas fa-microphone" id="voice-btn"></i>
+                        <i class="fas fa-paperclip" id="attach-btn"></i>
+                    </div>
+                    <input type="text" id="message-input" placeholder="Type a message">
+                    <button id="send-btn" class="send-btn"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar Menu Modal -->
+    <div id="sidebar-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Menu</h3>
+                <i class="fas fa-times" id="close-sidebar-modal"></i>
+            </div>
+            <div class="menu-item" id="change-dp">
+                <i class="fas fa-camera"></i> Change Profile Picture
+            </div>
+            <div class="menu-item" id="set-status">
+                <i class="fas fa-circle"></i> Set Status
+            </div>
+            <div class="menu-item" id="logout-item">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </div>
+        </div>
+    </div>
+
+    <!-- Call Modal -->
+    <div id="call-modal" class="modal" style="display: none;">
+        <div class="modal-content" style="text-align: center;">
+            <div class="modal-header">
+                <h3 id="call-type">Voice Call</h3>
+                <i class="fas fa-times" id="close-call-modal"></i>
+            </div>
+            <div style="padding: 30px; text-align: center;">
+                <i class="fas fa-phone" style="font-size: 50px; color: #00a884; margin-bottom: 20px;"></i>
+                <p id="call-user-name">Calling...</p>
+                <button id="end-call-btn" style="background: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 30px; margin-top: 20px; cursor: pointer;">
+                    <i class="fas fa-phone-slash"></i> End Call
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script2.js"></script>
+</body>
+</html>
